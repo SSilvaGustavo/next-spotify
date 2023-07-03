@@ -2,26 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@layer components {
+  .main-button {
+    @apply h-8 w-8 bg-white rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform
   }
-}
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  .button {
+    @apply h-5 w-5 cursor-pointer text-zinc-400 hover:text-white transition-colors
+  }
+
+  .range::-webkit-slider-thumb {
+    @apply opacity-0 transition-opacity
+  }
+
+  .range:hover::-webkit-slider-thumb {
+    @apply opacity-100
+  }
+
+  .sidebar-button {
+    @apply flex items-center space-x-2 hover:text-white transition-colors
+  }
 }
