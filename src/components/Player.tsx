@@ -118,7 +118,7 @@ export default function Player() {
       <div className="flex items-center justify-center space-x-6">
         <div
           className={`relative ${
-            shuffleState && "after:content-['']"
+            shuffleState ? "after:content-['']" : "after:content-none"
           } after:w-1 after:h-1 after:rounded-full after:absolute after:top-6 after:right-2 after:bg-green-500`}
         >
           <ShuffleIcon
@@ -155,9 +155,11 @@ export default function Player() {
           {repeatMode === "off" ? (
             <RepeatIcon className="button" onClick={() => toggleRepeatMode()} />
           ) : (
-            <div className={`relative ${
-              repeatMode === "track" && "after:content-['']"
-            } after:w-1 after:h-1 after:rounded-full after:absolute after:top-6 after:right-2 after:bg-green-500`}>
+            <div
+              className={`relative ${
+                repeatMode === "track" && "after:content-['']"
+              } after:w-1 after:h-1 after:rounded-full after:absolute after:top-6 after:right-2 after:bg-green-500`}
+            >
               <Repeat1Icon
                 className="button text-green-500"
                 onClick={() => toggleRepeatMode()}
