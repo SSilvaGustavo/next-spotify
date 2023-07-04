@@ -11,14 +11,6 @@
     @apply h-5 w-5 cursor-pointer text-zinc-400 hover:text-white transition-colors
   }
 
-  .range::-webkit-slider-thumb {
-    @apply opacity-0 transition-opacity
-  }
-
-  .range:hover::-webkit-slider-thumb {
-    @apply opacity-100
-  }
-
   .sidebar-button {
     @apply flex items-center space-x-2 hover:text-white transition-colors
   }

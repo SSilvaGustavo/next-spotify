@@ -2,6 +2,7 @@ import { SessionProvider } from '@/components/SessionProvider'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { Figtree } from 'next/font/google'
+import { RecoilProvider } from '@/components/RecoilRoot'
 
 // const inter = Inter({ subsets: ['latin'] })
 const figtree = Figtree({ subsets: ['latin'] })
@@ -16,7 +17,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={figtree.className}>
         <SessionProvider>
-          {children}
+          <RecoilProvider>
+            {children}
+          </RecoilProvider>
         </SessionProvider>
       </body>
     </html>

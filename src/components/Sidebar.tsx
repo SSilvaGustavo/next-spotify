@@ -1,4 +1,5 @@
-import { playlistIdState, playlistState } from "@/atoms/playlistAtoms";
+"use client"
+
 import useSpotify from "@/hooks/useSpotify";
 import {
   HomeIcon,
@@ -11,32 +12,33 @@ import {
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import Playlists from "./Playlists";
+import Artists from "./Artists";
 
 export default function Sidebar() {
   const spotifyApi = useSpotify();
   const { data: session, status } = useSession();
-  const [playlistId, setPlaylistsId] = useRecoilState(playlistIdState);
 
   const [playlists, setPlaylists] = useState<
     SpotifyApi.PlaylistObjectSimplified[]
   >([]);
+  const [artists, setArtists] = useState<SpotifyApi.ArtistObjectFull[]>();
 
   useEffect(() => {
     if (spotifyApi.getAccessToken()) {
       spotifyApi.getUserPlaylists().then((data) => {
         setPlaylists(data.body.items);
       });
+      spotifyApi.getMyTopArtists({ limit: 3 }).then((data) => {
+        setArtists(data.body.items);
+      });
     }
   }, [session, spotifyApi]);
 
   return (
-    <div className="text-zinc-500 p-5 text-xs lg:text-sm border-r border-zinc-900 overflow-y-scroll h-screen scrollbar-hide sm:max-w-[12rem] lg:max-w-[15rem] hidden md:inline-flex">
+    <div className="text-zinc-500 bg-zinc-950 p-5 m-2 text-xs lg:text-sm border-r border-zinc-900 h-screen sm:max-w-[12rem] lg:max-w-[24rem] hidden md:inline-flex rounded-lg">
       <div className="space-y-4 font-bold">
-        <button
-          className="sidebar-button"
-          onClick={() => signOut()}
-        >
+        <button className="sidebar-button" onClick={() => signOut()}>
           <LogOutIcon className="h-5 w-5" />
           <p>Logout</p>
         </button>
@@ -67,19 +69,15 @@ export default function Sidebar() {
           <p>Your episodes</p>
         </button>
         <hr className="border-t-[0.1px] border-zinc-900" />
+        <div className="overflow-y-scroll h-[58%] scrollbar-hide">
+          {playlists.map((playlist) => (
+            <Playlists key={playlist.id} playlist={playlist} />
+          ))}
 
-        {playlists.map((playlist) => (
-          <p
-            key={playlist.id}
-            onClick={() => setPlaylistsId(playlist.id)}
-            className="cursor-pointer hover:text-white"
-          >
-            <div>
-              <img src={playlist.images[0]} alt="" />
-              <p>{playlist.name}</p>
-            </div>
-          </p>
-        ))}
+          {artists && artists.map((artist) => (
+            <Artists  key={artist.id} artist={artist}/>
+          ))}
+        </div>
       </div>
     </div>
   );
