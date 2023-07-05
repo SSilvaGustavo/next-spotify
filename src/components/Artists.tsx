@@ -11,9 +11,9 @@ export default function Artists({ artist }: IArtist) {
   const [view, setView] = useRecoilState(currentViewState);
 
   const handleClick = () => {
-    setArtistId(artist.id)
-    setView("Artist")
-  }
+    setArtistId(artist.id);
+    setView("Artist");
+  };
 
   return (
     <div

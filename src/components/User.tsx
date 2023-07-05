@@ -22,12 +22,14 @@ export default function User() {
         <h2>{session?.user?.name}</h2>
         <ChevronDownIcon className="h-5 w-5" />
       </div>
-      {
-        view !== "Home" && 
+      {view !== "Home" && (
         <div className="absolute top-2 left-5 inline-flex justify-center items-center h-8 w-8 rounded-full bg-black/70">
-        <ChevronLeftIcon onClick={() => setView("Home")} className="pr-1 text-white h-8 w-8 fill-transparent stroke-1 cursor-pointer"/>
-      </div>
-      }
+          <ChevronLeftIcon
+            onClick={() => setView("Home")}
+            className="pr-1 text-white h-8 w-8 fill-transparent stroke-1 cursor-pointer"
+          />
+        </div>
+      )}
     </header>
   );
 }

@@ -11,9 +11,9 @@ export default function Playlists({ playlist }: IPlaylists) {
   const [view, setView] = useRecoilState(currentViewState);
 
   const handleClick = () => {
-    setPlaylistsId(playlist.id)
-    setView("Playlist")
-  }
+    setPlaylistsId(playlist.id);
+    setView("Playlist");
+  };
 
   return (
     <div

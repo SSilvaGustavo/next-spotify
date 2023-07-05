@@ -11,20 +11,21 @@ export default function useSongInfo() {
   useEffect(() => {
     const fetchSongInfo = async () => {
       if (currentTrackId && currentTrackId !== "") {
-        const trackInfo = await fetch(`https://api.spotify.com/v1/tracks/${currentTrackId}`,
+        const trackInfo = await fetch(
+          `https://api.spotify.com/v1/tracks/${currentTrackId}`,
           {
             headers: {
-              Authorization: `Bearer ${spotifyApi.getAccessToken()}`
-            }
+              Authorization: `Bearer ${spotifyApi.getAccessToken()}`,
+            },
           }
-        ).then(res => res.json())
+        ).then((res) => res.json());
 
-        setSongInfo(trackInfo)
+        setSongInfo(trackInfo);
       }
-    }
+    };
 
-    fetchSongInfo()
-  }, [currentTrackId, spotifyApi])
+    fetchSongInfo();
+  }, [currentTrackId, spotifyApi]);
 
   return songInfo;
 }

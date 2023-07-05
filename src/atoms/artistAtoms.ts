@@ -15,9 +15,9 @@ export const artistIdState = atom({
 export const artistTopTracks = atom({
   key: "artistTopTracks",
   default: [] as SpotifyApi.TrackObjectFull[],
-})
+});
 
 export const relatedArtistsState = atom({
   key: "relatedArtistsState",
   default: "",
-})
+});

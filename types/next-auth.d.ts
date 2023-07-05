@@ -11,7 +11,7 @@ declare module "next-auth" {
       refreshToken?: string | null;
       username?: string | null;
     } & DefaultSession["user"];
-    error?: string | null; 
+    error?: string | null;
   }
 }
 

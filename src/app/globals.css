@@ -4,14 +4,14 @@
 
 @layer components {
   .main-button {
-    @apply h-8 w-8 bg-white rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform
+    @apply h-8 w-8 bg-white rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform;
   }
 
   .button {
-    @apply h-5 w-5 cursor-pointer text-zinc-400 hover:text-white transition-colors
+    @apply h-5 w-5 cursor-pointer text-zinc-400 hover:text-white transition-colors;
   }
 
   .sidebar-button {
-    @apply flex items-center space-x-2 hover:text-white transition-colors
+    @apply flex items-center space-x-2 hover:text-white transition-colors;
   }
 }

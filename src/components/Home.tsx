@@ -29,7 +29,7 @@ export default function Home() {
     useState<SpotifyApi.PlaylistObjectSimplified[]>();
   const [relatedArtists, setRelatedArtists] =
     useState<SpotifyApi.ArtistObjectFull[]>();
-  const firstTopArtistId = topArtist && topArtist[0]
+  const firstTopArtistId = topArtist && topArtist[0];
   // const [featured, setFeatured] =
   // useState<SpotifyApi.PlaylistObjectSimplified[]>();
 
@@ -70,11 +70,11 @@ export default function Home() {
 
   useEffect(() => {
     if (session?.user?.accessToken && firstTopArtistId) {
-        spotifyApi.getArtistRelatedArtists(firstTopArtistId.id).then((data) => {
-          setRelatedArtists(data.body.artists);
-        });
+      spotifyApi.getArtistRelatedArtists(firstTopArtistId.id).then((data) => {
+        setRelatedArtists(data.body.artists);
+      });
     }
-  }, [spotifyApi, session, firstTopArtistId])
+  }, [spotifyApi, session, firstTopArtistId]);
 
   const playSong = (track: SpotifyApi.PlayHistoryObject) => {
     setCurrentTrackId(track.track.id);

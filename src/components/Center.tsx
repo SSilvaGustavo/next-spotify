@@ -37,9 +37,9 @@ export default function Center() {
   return (
     <div className="flex-grow h-screen overflow-y-scroll scrollbar-hide relative m-2">
       <User />
-      { view === "Home" && <Home /> }
-      { view === "Playlist" && <Playlist  /> }
-      { view === "Artist" && <Artist /> }
+      {view === "Home" && <Home />}
+      {view === "Playlist" && <Playlist />}
+      {view === "Artist" && <Artist />}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import SpotifyWebApi from 'spotify-web-api-node' 
+import SpotifyWebApi from "spotify-web-api-node";
 
 const scopes = [
   "user-read-email",
@@ -11,10 +11,10 @@ const scopes = [
   "user-read-recently-played",
   "user-follow-read",
   // "user-library-modify",
-  "playlist-read-private",  
-  "playlist-read-collaborative",  
-  "streaming",  
-].join(",")
+  "playlist-read-private",
+  "playlist-read-collaborative",
+  "streaming",
+].join(",");
 
 const params = {
   scope: scopes,
@@ -27,8 +27,8 @@ const LOGIN_URL = `https://accounts.spotify.com/authorize?${queryParamString.toS
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-}) 
+});
 
-export default spotifyApi
+export default spotifyApi;
 
 export { LOGIN_URL };

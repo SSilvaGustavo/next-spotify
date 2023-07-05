@@ -1,12 +1,7 @@
 "use client";
 
 import useSpotify from "@/hooks/useSpotify";
-import {
-  HomeIcon,
-  SearchIcon,
-  LibraryIcon,
-  LogOutIcon,
-} from "lucide-react";
+import { HomeIcon, SearchIcon, LibraryIcon, LogOutIcon } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import Playlists from "./Playlists";
@@ -19,13 +14,12 @@ export default function Sidebar() {
   const { data: session, status } = useSession();
   const [view, setView] = useRecoilState(currentViewState);
 
-
   const [playlists, setPlaylists] = useState<
     SpotifyApi.PlaylistObjectSimplified[]
   >([]);
   const [artists, setArtists] = useState<SpotifyApi.ArtistObjectFull[]>();
   const [prevScrollPos, setPrevScrollPos] = useState(0);
-  const scrollDiv = useRef<HTMLDivElement>(null)
+  const scrollDiv = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (spotifyApi.getAccessToken()) {
@@ -46,24 +40,38 @@ export default function Sidebar() {
             <LogOutIcon className="h-6 w-6" />
             <p>Logout</p>
           </button>
-          <button className="sidebar-button gap-4" onClick={() => setView("Home")}>
+          <button
+            className="sidebar-button gap-4"
+            onClick={() => setView("Home")}
+          >
             <HomeIcon className="h-6 w-6" />
             <p>Home</p>
           </button>
-          <button className="sidebar-button gap-4" onClick={() => setView("Home")}>
+          <button
+            className="sidebar-button gap-4"
+            onClick={() => setView("Home")}
+          >
             <SearchIcon className="h-6 w-6" />
             <p>Search</p>
           </button>
         </div>
 
         <div className={`bg-zinc-950 rounded-lg`}>
-          <div className={`${prevScrollPos === 0 ? "" : "shadow-lg shadow-black/70"}`}>
+          <div
+            className={`${
+              prevScrollPos === 0 ? "" : "shadow-lg shadow-black/70"
+            }`}
+          >
             <button className={`sidebar-button p-5`}>
               <LibraryIcon className="h-6 w-6 gap-4" />
               <p>Your Library</p>
             </button>
           </div>
-          <div className="flex flex-col overflow-y-scroll scrollbar-hide h-[64vh]" ref={scrollDiv} onScroll={() => setPrevScrollPos(scrollDiv.current!.scrollTop)}>
+          <div
+            className="flex flex-col overflow-y-scroll scrollbar-hide h-[64vh]"
+            ref={scrollDiv}
+            onScroll={() => setPrevScrollPos(scrollDiv.current!.scrollTop)}
+          >
             {playlists.map((playlist) => (
               <Playlists key={playlist.id} playlist={playlist} />
             ))}

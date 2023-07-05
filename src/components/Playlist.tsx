@@ -14,7 +14,7 @@ export default function Playlist() {
   const color = useRecoilState(colorState);
   const playlistId = useRecoilState(playlistIdState);
   const [playlist, setPlaylist] = useRecoilState(playlistState);
-  const [playlistUri, setPlaylistUri] = useState<string>("")
+  const [playlistUri, setPlaylistUri] = useState<string>("");
   const firstPlaylistId = playlistId[0];
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function Playlist() {
       .getPlaylist(playlistId[0])
       .then((data) => {
         setPlaylist(data.body);
-        setPlaylistUri(data.body.external_urls.spotify)
+        setPlaylistUri(data.body.external_urls.spotify);
       })
       .catch((error) => console.log("Something went wrong!", error));
   }, [firstPlaylistId, spotifyApi]);
@@ -43,7 +43,9 @@ export default function Playlist() {
         )}
         <div className="flex flex-col text-sm font-semibold ml-7">
           <p className="capitalize font-bold">{playlist.type}</p>
-          <Link href={playlistUri} target="_blank"
+          <Link
+            href={playlistUri}
+            target="_blank"
             className={`text-2xl md:text-4xl font-bold mb-10 mt-2 hover:text-green-500 transition-colors ${
               playlist.name
                 ? playlist.name.length > 19
@@ -72,7 +74,7 @@ export default function Playlist() {
           </div>
           <div className="flex items-center justify-between text-sm">
             <p>Album</p>
-            <ClockIcon className="h-5 w-5"/>
+            <ClockIcon className="h-5 w-5" />
           </div>
         </div>
         {playlist.tracks?.items

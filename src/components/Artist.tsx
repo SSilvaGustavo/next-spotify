@@ -68,7 +68,7 @@ export default function Artist() {
     <div className="flex flex-col h-full">
       <section
         className={`flex items-end bg-gradient-to-b to-zinc-950 ${color[0]} h-80 px-8 pb-4 pt-14 text-white rounded-t-lg`}
-      > 
+      >
         {artist.images ? (
           <img
             className="h-60 w-60 shadow-2xl rounded"
