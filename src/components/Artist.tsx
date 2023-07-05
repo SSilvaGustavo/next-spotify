@@ -100,7 +100,7 @@ export default function Artist() {
           <h1 className="text-2xl">Fans Also Like</h1>
           <div className="flex gap-6">
             {relatedArtists?.slice(0, 7).map((relatedArtist, i) => (
-              <Card key={relatedArtist.id} image={relatedArtist.images[0].url} name={relatedArtist.name} description={relatedArtist.type} onClick={() => setArtistId(relatedArtist.id)}/>
+              <Card key={relatedArtist.id} image={relatedArtist.images[0].url} name={relatedArtist.name} description={relatedArtist.type} onClick={() => setArtistId(relatedArtist.id)} isArtist/>
             ))}
           </div>
         </div>
