@@ -6,5 +6,5 @@ export interface ISong {
 
 export const currentViewState = atom({
   key: "currentViewState",
-  default: "",
+  default: "Home",
 });

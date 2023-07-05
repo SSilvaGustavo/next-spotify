@@ -102,7 +102,7 @@ export default function Player() {
   };
 
   return (
-    <div className="h-24 bg-gradient-to-b from-zinc-950 to-slate-900 text-white grid grid-cols-3 px-2 md:px-8">
+    <div className="h-24 bg-gradient-to-b from-black to-slate-900 text-white grid grid-cols-3 px-2 md:px-8">
       <div className="flex items-center space-x-4">
         <img
           className="hidden md:inline h-14 w-h-14 rounded-md"

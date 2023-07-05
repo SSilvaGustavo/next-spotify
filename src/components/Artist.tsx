@@ -1,52 +1,33 @@
 import useSpotify from "@/hooks/useSpotify";
-import { shuffle } from "lodash";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon, PlayIcon } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { currentViewState } from "@/atoms/viewsAtoms";
-import { artistIdState, artistState } from "@/atoms/artistAtoms";
+import {
+  artistIdState,
+  artistState,
+  artistTopTracks,
+  relatedArtistsState,
+} from "@/atoms/artistAtoms";
 import ArtistSong from "./ArtistSong";
-
-const colors = [
-  "from-red-500",
-  "from-blue-500",
-  "from-green-500",
-  "from-indigo-500",
-  "from-purple-500",
-  "from-yellow-500",
-  "from-pink-500",
-  "from-sky-500",
-  "from-teal-500",
-  "from-emerald-500",
-  "from-orange-500",
-];
+import Card from "./Card";
+import { colorState } from "@/atoms/utilsAtoms";
 
 export default function Artist() {
   const { data: session } = useSession();
   const spotifyApi = useSpotify();
-  const [color, setColor] = useState<string>();
-  const artistId = useRecoilState(artistIdState);
+  const [color, setColor] = useRecoilState(colorState);
+  const [artistId, setArtistId] = useRecoilState(artistIdState);
   const [artist, setArtist] = useRecoilState(artistState);
-  const [artistTracks, setArtistTracks] = useState<SpotifyApi.TrackObjectFull[]>()
-  const firstArtistId = artistId[0];
-
-  useEffect(() => {
-    setColor(shuffle(colors).pop());
-  }, [firstArtistId]);
-
-  useEffect(() => {
-    spotifyApi
-      .getArtist(artistId[0])
-      .then((data) => {
-        setArtist(data.body);
-      })
-      .catch((error) => console.log("Something went wrong!", error));
-  }, [firstArtistId, spotifyApi]);
+  const [relatedArtists, setRelatedArtists] =
+    useState<SpotifyApi.ArtistObjectFull[]>();
+  // const [artistTracks, setArtistTracks] = useState<SpotifyApi.TrackObjectFull[]>();
+  const [artistTracks, setArtistTracks] = useRecoilState(artistTopTracks)
 
   async function getTopTracks() {
     const response = await fetch(
-      `https://api.spotify.com/v1/artists/${artistId[0]}/top-tracks?` +
+      `https://api.spotify.com/v1/artists/${artistId}/top-tracks?` +
         new URLSearchParams({ market: "BR" }),
       {
         headers: {
@@ -65,16 +46,32 @@ export default function Artist() {
       }
     }
     f();
-  }, [session, artistId[0]]);
+  }, [session, artistId]);
+
+  useEffect(() => {
+    spotifyApi
+      .getArtist(artistId)
+      .then((data) => {
+        setArtist(data.body);
+      })
+      .catch((error) => console.log("Something went wrong!", error));
+
+      spotifyApi
+      .getArtistRelatedArtists(artistId)
+      .then((data) => {
+        setRelatedArtists(data.body.artists);
+      })
+      .catch((error) => console.log("Something went wrong!", error));
+  }, [artistId, spotifyApi]);
 
   return (
-    <>
+    <div className="flex flex-col h-full">
       <section
-        className={`flex items-end space-x-7 bg-gradient-to-b to-zinc-950 ${color} h-80 px-8 py-4 text-white rounded-lg`}
+        className={`flex items-end space-x-7 bg-gradient-to-b to-zinc-950 ${color} h-80 px-8 py-4 text-white rounded-t-lg`}
       >
         {artist.images ? (
           <img
-            className="h-60 w-60 shadow-2xl"
+            className="h-60 w-60 shadow-2xl rounded"
             src={artist.images[0].url}
             alt=""
           />
@@ -90,12 +87,24 @@ export default function Artist() {
           </span>
         </div>
       </section>
-
-      <div className="px-8 flex flex-col text-white space-y-1 pb-28 pt-12 bg-zinc-950">
-        {artistTracks?.slice(0, 5).map((track, i) => (
-          <ArtistSong key={track.id} track={track} order={i + 1} />
-        ))}
+      <div className="px-8 flex flex-col pb-28 pt-12 bg-zinc-950 gap-12">
+        <div className="flex flex-col text-white font-bold space-y-2">
+          <h1 className="text-2xl">Popular</h1>
+          <div className="flex flex-col text-white space-y-1">
+            {artistTracks?.slice(0, 5).map((track, i) => (
+              <ArtistSong key={track.id} track={track} order={i + 1} />
+            ))}
+          </div>
+        </div>
+        <div className="flex flex-col text-white font-bold space-y-6">
+          <h1 className="text-2xl">Fans Also Like</h1>
+          <div className="flex gap-6">
+            {relatedArtists?.slice(0, 7).map((relatedArtist, i) => (
+              <Card key={relatedArtist.id} image={relatedArtist.images[0].url} name={relatedArtist.name} description={relatedArtist.type} onClick={() => setArtistId(relatedArtist.id)}/>
+            ))}
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   );
 }

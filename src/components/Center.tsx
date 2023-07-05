@@ -8,6 +8,9 @@ import { useRecoilState } from "recoil";
 import { currentViewState } from "@/atoms/viewsAtoms";
 import Playlist from "./Playlist";
 import Artist from "./Artist";
+import Home from "./Home";
+import { colorState } from "@/atoms/utilsAtoms";
+import { artistIdState } from "@/atoms/artistAtoms";
 
 const colors = [
   "from-red-500",
@@ -26,15 +29,16 @@ const colors = [
 export default function Center() {
   const { data: session } = useSession();
   const spotifyApi = useSpotify();
-  const [color, setColor] = useState<string>();
+  const [color, setColor] = useRecoilState(colorState);
   const playlistId = useRecoilState(playlistIdState);
+  const artistId = useRecoilState(artistIdState);
   const [playlist, setPlaylist] = useRecoilState(playlistState);
   const [view, setView] = useRecoilState(currentViewState);
   const firstPlaylistId = playlistId[0];
 
   useEffect(() => {
-    setColor(shuffle(colors).pop());
-  }, [firstPlaylistId]);
+    setColor(shuffle(colors).pop()!);
+  }, [artistId[0], playlistId[0]]);
 
   return (
     <div className="flex-grow h-screen overflow-y-scroll scrollbar-hide relative m-2">
@@ -54,7 +58,8 @@ export default function Center() {
           <ChevronDownIcon className="h-5 w-5" />
         </div>
       </header>
-      { view === "Playlist" && <Playlist /> }
+      { view === "Home" && <Home /> }
+      { view === "Playlist" && <Playlist  /> }
       { view === "Artist" && <Artist /> }
     </div>
   );
