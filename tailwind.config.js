@@ -7,10 +7,31 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      colors: {
+        zinc: {
+          750: '#282828',
+          950: '#121212'
+        }
+      },
+      animation: {
+        'fade-in-top': 'fade-in-top 0.2s ease-out both',
+        'fade-in': 'fade-in 0.3s ease-in-out',
+      },
+      keyframes: {
+        'fade-in-top': {
+          "0%": {
+            opacity: '0',
+            transform: "translateY(30px)",
+          },
+          "100%": {
+            opacity: '1',
+            transform: "translateY(0)",
+          },
+        },
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
       },
     },
   },
