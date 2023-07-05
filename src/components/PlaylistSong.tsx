@@ -1,4 +1,3 @@
-import { playlistIdState } from "@/atoms/playlistAtoms";
 import { currentTrackState, isPlayingState } from "@/atoms/songAtoms";
 import useSpotify from "@/hooks/useSpotify";
 import { artistsFormatter } from "@/utils/formattedArtists";
@@ -16,7 +15,6 @@ export default function PlaylistSong({ order, track }: IPlaylistSong) {
   const spotifyApi = useSpotify();
   const [currentTrackId, setCurrentTrackId] = useRecoilState(currentTrackState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
-  const playlistId = useRecoilState(playlistIdState);
   const isCurrentTrack = track.track?.id === currentTrackId;
 
   const playSong = () => {

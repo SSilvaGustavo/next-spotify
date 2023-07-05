@@ -5,9 +5,6 @@ import {
   HomeIcon,
   SearchIcon,
   LibraryIcon,
-  PlusCircleIcon,
-  HeartIcon,
-  RssIcon,
   LogOutIcon,
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";

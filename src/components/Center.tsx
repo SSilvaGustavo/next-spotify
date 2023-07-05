@@ -1,9 +1,6 @@
-import { playlistState, playlistIdState } from "@/atoms/playlistAtoms";
-import useSpotify from "@/hooks/useSpotify";
+import { playlistIdState } from "@/atoms/playlistAtoms";
 import { shuffle } from "lodash";
-import { ChevronDownIcon } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { currentViewState } from "@/atoms/viewsAtoms";
 import Playlist from "./Playlist";
@@ -28,14 +25,10 @@ const colors = [
 ];
 
 export default function Center() {
-  const { data: session } = useSession();
-  const spotifyApi = useSpotify();
   const [color, setColor] = useRecoilState(colorState);
   const playlistId = useRecoilState(playlistIdState);
   const artistId = useRecoilState(artistIdState);
-  const [playlist, setPlaylist] = useRecoilState(playlistState);
   const [view, setView] = useRecoilState(currentViewState);
-  const firstPlaylistId = playlistId[0];
 
   useEffect(() => {
     setColor(shuffle(colors).pop()!);

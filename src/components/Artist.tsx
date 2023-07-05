@@ -1,30 +1,20 @@
 import useSpotify from "@/hooks/useSpotify";
-import {
-  ChevronDownIcon,
-  ChevronLeftIcon,
-  ChevronsLeftIcon,
-  PlayIcon,
-} from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { currentViewState } from "@/atoms/viewsAtoms";
 import {
   artistIdState,
   artistState,
   artistTopTracks,
-  relatedArtistsState,
 } from "@/atoms/artistAtoms";
 import ArtistSong from "./ArtistSong";
 import Card from "./Card";
 import { colorState } from "@/atoms/utilsAtoms";
 import Link from "next/link";
-import User from "./User";
 
 export default function Artist() {
   const { data: session } = useSession();
   const spotifyApi = useSpotify();
-  const setView = useRecoilState(currentViewState);
   const color = useRecoilState(colorState);
   const [artistId, setArtistId] = useRecoilState(artistIdState);
   const [artist, setArtist] = useRecoilState(artistState);

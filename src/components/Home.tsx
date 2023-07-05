@@ -1,7 +1,6 @@
 import { currentTrackState, isPlayingState } from "@/atoms/songAtoms";
 import useSpotify from "@/hooks/useSpotify";
 import { artistsFormatter } from "@/utils/formattedArtists";
-import { shuffle } from "lodash";
 import { PlayIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";

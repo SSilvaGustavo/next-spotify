@@ -1,8 +1,5 @@
 import { playlistIdState } from "@/atoms/playlistAtoms";
 import { currentViewState } from "@/atoms/viewsAtoms";
-import useSpotify from "@/hooks/useSpotify";
-import Link from "next/link";
-import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
 interface IPlaylists {

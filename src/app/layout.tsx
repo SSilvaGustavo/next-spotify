@@ -1,6 +1,5 @@
 import { SessionProvider } from '@/components/SessionProvider'
 import './globals.css'
-import { Inter } from 'next/font/google'
 import { Figtree } from 'next/font/google'
 import { RecoilProvider } from '@/components/RecoilRoot'
 

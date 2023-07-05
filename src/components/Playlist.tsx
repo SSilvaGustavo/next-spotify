@@ -1,14 +1,12 @@
 import { playlistState, playlistIdState } from "@/atoms/playlistAtoms";
 import useSpotify from "@/hooks/useSpotify";
-import { ChevronDownIcon, ClockIcon } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
+import { ClockIcon } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { currentViewState } from "@/atoms/viewsAtoms";
 import PlaylistSong from "./PlaylistSong";
 import { colorState } from "@/atoms/utilsAtoms";
 import Link from "next/link";
-import User from "./User";
 
 export default function Playlist() {
   const { data: session } = useSession();

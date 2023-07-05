@@ -1,9 +1,7 @@
-import { artistIdState } from "@/atoms/artistAtoms";
 import { currentTrackState, isPlayingState } from "@/atoms/songAtoms";
 import useSpotify from "@/hooks/useSpotify";
 import { artistsFormatter } from "@/utils/formattedArtists";
 import { millisToMinutesAndSeconds } from "@/utils/time";
-import { useSession } from "next-auth/react";
 import { PauseIcon, PlayIcon } from "lucide-react";
 import { useRecoilState } from "recoil";
 import Link from "next/link";
@@ -16,7 +14,6 @@ interface IArtistSong {
 export default function ArtistSong({ order, track }: IArtistSong) {
   const spotifyApi = useSpotify();
   const [currentTrackId, setCurrentTrackId] = useRecoilState(currentTrackState);
-  const [artistId, setArtistId] = useRecoilState(artistIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const isCurrentTrack = track.id === currentTrackId;
 

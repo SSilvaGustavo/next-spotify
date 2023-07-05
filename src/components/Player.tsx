@@ -6,7 +6,6 @@ import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import {
-  ArrowLeftRightIcon,
   SkipBackIcon,
   SkipForwardIcon,
   PauseIcon,
