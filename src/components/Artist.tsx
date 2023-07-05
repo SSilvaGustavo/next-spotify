@@ -1,5 +1,10 @@
 import useSpotify from "@/hooks/useSpotify";
-import { ChevronDownIcon, PlayIcon } from "lucide-react";
+import {
+  ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronsLeftIcon,
+  PlayIcon,
+} from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
@@ -13,17 +18,21 @@ import {
 import ArtistSong from "./ArtistSong";
 import Card from "./Card";
 import { colorState } from "@/atoms/utilsAtoms";
+import Link from "next/link";
+import User from "./User";
 
 export default function Artist() {
   const { data: session } = useSession();
   const spotifyApi = useSpotify();
-  const [color, setColor] = useRecoilState(colorState);
+  const setView = useRecoilState(currentViewState);
+  const color = useRecoilState(colorState);
   const [artistId, setArtistId] = useRecoilState(artistIdState);
   const [artist, setArtist] = useRecoilState(artistState);
   const [relatedArtists, setRelatedArtists] =
     useState<SpotifyApi.ArtistObjectFull[]>();
   // const [artistTracks, setArtistTracks] = useState<SpotifyApi.TrackObjectFull[]>();
-  const [artistTracks, setArtistTracks] = useRecoilState(artistTopTracks)
+  const [artistTracks, setArtistTracks] = useRecoilState(artistTopTracks);
+  const [artistUri, setArtistUri] = useState<string>("");
 
   async function getTopTracks() {
     const response = await fetch(
@@ -53,10 +62,11 @@ export default function Artist() {
       .getArtist(artistId)
       .then((data) => {
         setArtist(data.body);
+        setArtistUri(data.body.external_urls.spotify);
       })
       .catch((error) => console.log("Something went wrong!", error));
 
-      spotifyApi
+    spotifyApi
       .getArtistRelatedArtists(artistId)
       .then((data) => {
         setRelatedArtists(data.body.artists);
@@ -67,8 +77,8 @@ export default function Artist() {
   return (
     <div className="flex flex-col h-full">
       <section
-        className={`flex items-end space-x-7 bg-gradient-to-b to-zinc-950 ${color} h-80 px-8 py-4 text-white rounded-t-lg`}
-      >
+        className={`flex items-end bg-gradient-to-b to-zinc-950 ${color[0]} h-80 px-8 pb-4 pt-14 text-white rounded-t-lg`}
+      > 
         {artist.images ? (
           <img
             className="h-60 w-60 shadow-2xl rounded"
@@ -78,13 +88,22 @@ export default function Artist() {
         ) : (
           <div className="h-60 w-60 shadow-2xl border border-white"></div>
         )}
-        <div className="flex flex-col space-y-5">
-          <h1 className="text-3xl md:text-5xl xl:text-8xl font-bold">
+        <div className="flex flex-col space-y-5 ml-7">
+          <Link
+            href={artistUri}
+            target="_blank"
+            className="text-3xl md:text-5xl xl:text-8xl font-bold hover:text-green-500 transition-colors"
+          >
             {artist.name}
-          </h1>
-          <span className="">
-            {`${artist.followers?.total.toLocaleString()} monthly listeners`}
-          </span>
+          </Link>
+          <div className="flex flex-col">
+            <span className="font-semibold">
+              {`${artist.followers?.total.toLocaleString()} monthly listeners`}
+            </span>
+            <span className="text-sm font-medium capitalize text-zinc-400">
+              {artist.genres?.slice(0, 2).join(", ")}
+            </span>
+          </div>
         </div>
       </section>
       <div className="px-8 flex flex-col pb-28 pt-12 bg-zinc-950 gap-12">
@@ -100,7 +119,14 @@ export default function Artist() {
           <h1 className="text-2xl">Fans Also Like</h1>
           <div className="flex gap-6">
             {relatedArtists?.slice(0, 7).map((relatedArtist, i) => (
-              <Card key={relatedArtist.id} image={relatedArtist.images[0].url} name={relatedArtist.name} description={relatedArtist.type} onClick={() => setArtistId(relatedArtist.id)} isArtist/>
+              <Card
+                key={relatedArtist.id}
+                image={relatedArtist.images[0].url}
+                name={relatedArtist.name}
+                description={relatedArtist.type}
+                onClick={() => setArtistId(relatedArtist.id)}
+                isArtist
+              />
             ))}
           </div>
         </div>

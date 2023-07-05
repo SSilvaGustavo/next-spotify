@@ -7,13 +7,16 @@ import { useRecoilState } from "recoil";
 import { currentViewState } from "@/atoms/viewsAtoms";
 import PlaylistSong from "./PlaylistSong";
 import { colorState } from "@/atoms/utilsAtoms";
+import Link from "next/link";
+import User from "./User";
 
 export default function Playlist() {
   const { data: session } = useSession();
   const spotifyApi = useSpotify();
-  const [color, setColor] = useRecoilState(colorState);
+  const color = useRecoilState(colorState);
   const playlistId = useRecoilState(playlistIdState);
   const [playlist, setPlaylist] = useRecoilState(playlistState);
+  const [playlistUri, setPlaylistUri] = useState<string>("")
   const firstPlaylistId = playlistId[0];
 
   useEffect(() => {
@@ -21,6 +24,7 @@ export default function Playlist() {
       .getPlaylist(playlistId[0])
       .then((data) => {
         setPlaylist(data.body);
+        setPlaylistUri(data.body.external_urls.spotify)
       })
       .catch((error) => console.log("Something went wrong!", error));
   }, [firstPlaylistId, spotifyApi]);
@@ -28,7 +32,7 @@ export default function Playlist() {
   return (
     <>
       <section
-        className={`flex items-end space-x-7 bg-gradient-to-b to-zinc-950 ${color} h-80 px-8 text-white rounded-t-lg`}
+        className={`flex items-end bg-gradient-to-b to-zinc-950 ${color[0]} h-80 px-8 pb-4 pt-14 text-white rounded-t-lg`}
       >
         {playlist.images ? (
           <img
@@ -39,10 +43,10 @@ export default function Playlist() {
         ) : (
           <div className="h-60 w-60 shadow-2xl border border-white"></div>
         )}
-        <div className="flex flex-col text-sm font-semibold">
+        <div className="flex flex-col text-sm font-semibold ml-7">
           <p className="capitalize font-bold">{playlist.type}</p>
-          <h1
-            className={`text-2xl md:text-4xl font-bold mb-10 mt-2 ${
+          <Link href={playlistUri} target="_blank"
+            className={`text-2xl md:text-4xl font-bold mb-10 mt-2 hover:text-green-500 transition-colors ${
               playlist.name
                 ? playlist.name.length > 19
                   ? playlist.name.length > 25
@@ -53,7 +57,7 @@ export default function Playlist() {
             }`}
           >
             {playlist.name}
-          </h1>
+          </Link>
           <span className="text-zinc-400 mb-1">{playlist.description}</span>
           <p>
             {playlist.owner && playlist.owner.display_name} •{" "}

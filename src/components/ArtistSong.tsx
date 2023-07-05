@@ -6,6 +6,7 @@ import { millisToMinutesAndSeconds } from "@/utils/time";
 import { useSession } from "next-auth/react";
 import { PauseIcon, PlayIcon } from "lucide-react";
 import { useRecoilState } from "recoil";
+import Link from "next/link";
 
 interface IArtistSong {
   order: number;
@@ -15,7 +16,7 @@ interface IArtistSong {
 export default function ArtistSong({ order, track }: IArtistSong) {
   const spotifyApi = useSpotify();
   const [currentTrackId, setCurrentTrackId] = useRecoilState(currentTrackState);
-  const [artistId, setArtistId] = useRecoilState(artistIdState); 
+  const [artistId, setArtistId] = useRecoilState(artistIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const isCurrentTrack = track.id === currentTrackId;
 
@@ -31,22 +32,38 @@ export default function ArtistSong({ order, track }: IArtistSong) {
     <div>
       {track.id && (
         <div
-          className={`group grid grid-cols-2 py-3 px-4 rounded-lg hover:bg-zinc-800/70 text-zinc-400 w-[90%] ${isPlaying && isCurrentTrack && 'bg-zinc-800/70'}`}
+          className={`group grid grid-cols-2 py-3 px-4 rounded-lg hover:bg-zinc-800/70 text-zinc-400 w-[90%] ${
+            isPlaying && isCurrentTrack && "bg-zinc-800/70"
+          }`}
           onClick={playSong}
         >
           <div className="flex items-center space-x-4">
-          <div className="flex items-center">
+            <div className="flex items-center">
               <div className="group h-4 w-4">
-              <PlayIcon className={`h-4 w-4 fill-white stroke-white hidden ${isPlaying && isCurrentTrack ? '' : "group-hover:block"}`}/>
-                {
-                  isPlaying && isCurrentTrack ? 
-                  <PauseIcon className="h-4 w-4 fill-white stroke-white"/>
-                  :
+                <PlayIcon
+                  className={`h-4 w-4 fill-white stroke-white hidden ${
+                    isPlaying && isCurrentTrack ? "" : "group-hover:block"
+                  }`}
+                />
+                {isPlaying && isCurrentTrack ? (
+                  <PauseIcon className="h-4 w-4 fill-white stroke-white" />
+                ) : (
                   <p className="inline group-hover:hidden">{order}</p>
-                }
+                )}
               </div>
             </div>
-            <img className="h-10 w-10" src={track.album.images[0].url} alt="" />
+            <Link
+              href={track.external_urls.spotify}
+              target="_blank"
+              className="hover:scale-105 transition-transform"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <img
+                className="h-10 w-10"
+                src={track.album.images[0].url}
+                alt=""
+              />
+            </Link>
             <div className="">
               <p className="text-white text-base w-36 lg:w-64 truncate">
                 {track.name}

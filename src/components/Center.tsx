@@ -11,6 +11,7 @@ import Artist from "./Artist";
 import Home from "./Home";
 import { colorState } from "@/atoms/utilsAtoms";
 import { artistIdState } from "@/atoms/artistAtoms";
+import User from "./User";
 
 const colors = [
   "from-red-500",
@@ -42,22 +43,7 @@ export default function Center() {
 
   return (
     <div className="flex-grow h-screen overflow-y-scroll scrollbar-hide relative m-2">
-      <header className="absolute top-5 right-8">
-        <div
-          className={`flex items-center bg-black space-x-3 opacity-90 hover:opacity-80 cursor-pointer rounded-full p-1 pr-2 text-white transition-opacity`}
-          onClick={() => signOut()}
-        >
-          <img
-            className="rounded-full w-6 h-6"
-            src={session?.user?.image!}
-            alt=""
-            referrerPolicy="no-referrer"
-          />
-
-          <h2>{session?.user?.name}</h2>
-          <ChevronDownIcon className="h-5 w-5" />
-        </div>
-      </header>
+      <User />
       { view === "Home" && <Home /> }
       { view === "Playlist" && <Playlist  /> }
       { view === "Artist" && <Artist /> }

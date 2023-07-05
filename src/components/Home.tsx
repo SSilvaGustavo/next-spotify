@@ -100,9 +100,10 @@ export default function Home() {
       <section
         className={`flex flex-col items-start justify-end space-x-7 bg-gradient-to-b to-zinc-950 from-purple-700 h-80 px-8 pb-8 text-white rounded-t-lg`}
       >
-        <h1 className="text-start w-full py-8 font-bold text-4xl">
-          Hi {session?.user?.name?.split(" ")[0]}, listen again
+        <h1 className="text-start w-full py-6 font-bold text-4xl">
+          Hi {session?.user?.name?.split(" ")[0]}
         </h1>
+        <span className="text-2xl font-bold pb-2">Listen again</span>
         <div className="grid grid-cols-3 gap-x-8 gap-y-4">
           {recentlyTracks?.map((recentlyTracked) => (
             <div
@@ -115,9 +116,9 @@ export default function Home() {
                 src={recentlyTracked.track.album.images[0].url}
                 alt=""
               />
-              <div className="">
+              <div className="flex flex-col justify-center">
                 <p className="font-bold">{recentlyTracked.track.name}</p>
-                <span className="text-xs font-medium text-zinc-400 truncate">
+                <span className="text-xs font-medium text-zinc-400 truncate w-80">
                   {artistsFormatter(recentlyTracked.track)}
                 </span>
               </div>

@@ -4,6 +4,7 @@ import useSpotify from "@/hooks/useSpotify";
 import { artistsFormatter } from "@/utils/formattedArtists";
 import { millisToMinutesAndSeconds } from "@/utils/time";
 import { PauseIcon, PlayIcon } from "lucide-react";
+import Link from "next/link";
 import { useRecoilState } from "recoil";
 
 interface IPlaylistSong {
@@ -30,26 +31,38 @@ export default function PlaylistSong({ order, track }: IPlaylistSong) {
     <div>
       {track.track?.id && (
         <div
-          className={`group grid grid-cols-2 py-3 px-4 rounded-lg hover:bg-zinc-800/70 text-zinc-400 w-[95%] ${isPlaying && isCurrentTrack && 'bg-zinc-800/70'}`}
+          className={`group grid grid-cols-2 py-3 px-4 rounded-lg hover:bg-zinc-800/70 text-zinc-400 w-[95%] ${
+            isPlaying && isCurrentTrack && "bg-zinc-800/70"
+          }`}
           onClick={playSong}
         >
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
               <div className="group h-4 w-4">
-              <PlayIcon className={`h-4 w-4 fill-white stroke-white hidden ${isPlaying && isCurrentTrack ? '' : "group-hover:block"}`}/>
-                {
-                  isPlaying && isCurrentTrack ? 
-                  <PauseIcon className="h-4 w-4 fill-white stroke-white"/>
-                  :
+                <PlayIcon
+                  className={`h-4 w-4 fill-white stroke-white hidden ${
+                    isPlaying && isCurrentTrack ? "" : "group-hover:block"
+                  }`}
+                />
+                {isPlaying && isCurrentTrack ? (
+                  <PauseIcon className="h-4 w-4 fill-white stroke-white" />
+                ) : (
                   <p className="inline group-hover:hidden">{order}</p>
-                }
+                )}
               </div>
             </div>
-            <img
-              className="h-10 w-10"
-              src={track.track?.album.images[0].url}
-              alt=""
-            />
+            <Link
+              href={track.track.external_urls.spotify}
+              target="_blank"
+              className="hover:scale-105 transition-transform"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <img
+                className="h-10 w-10"
+                src={track.track?.album.images[0].url}
+                alt=""
+              />
+            </Link>
             <div className="">
               <p className="text-white text-base w-36 lg:w-64 truncate">
                 {track.track?.name}
@@ -70,7 +83,9 @@ export default function PlaylistSong({ order, track }: IPlaylistSong) {
           </div>
 
           <div className="flex items-center justify-between text-sm">
-            <p className="w-40 hidden md:inline group-hover:text-white">{track.track?.album.name}</p>
+            <p className="w-40 hidden md:inline group-hover:text-white">
+              {track.track?.album.name}
+            </p>
             <p>
               {millisToMinutesAndSeconds(
                 track.track! && track.track.duration_ms
