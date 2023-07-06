@@ -133,7 +133,7 @@ export default function Home() {
         <div className="flex flex-col text-white font-bold space-y-6">
           <h1 className="text-2xl">Your favorite artists</h1>
           <div className="flex gap-8">
-            {topArtist?.map((artist) => (
+            {topArtist && topArtist?.map((artist) => (
               <Card
                 key={artist.id}
                 image={artist.images[0].url}
@@ -149,7 +149,7 @@ export default function Home() {
         <div className="flex flex-col text-white font-bold space-y-6">
           <h1 className="text-2xl">Listen too</h1>
           <div className="flex gap-8">
-            {playlists?.map((playlist) => (
+            {playlists && playlists?.map((playlist) => (
               <Card
                 key={playlist.id}
                 image={playlist.images[0].url}
@@ -166,7 +166,7 @@ export default function Home() {
             Artists similar to {firstTopArtistId?.name}
           </h1>
           <div className="flex gap-8">
-            {relatedArtists?.slice(0, 6).map((artist) => (
+            {relatedArtists && relatedArtists?.slice(0, 6).map((artist) => (
               <Card
                 key={artist.id}
                 image={artist.images[0].url}
@@ -182,7 +182,7 @@ export default function Home() {
         <div className="flex flex-col text-white font-bold space-y-6">
           <h1 className="text-2xl">Party with your friends</h1>
           <div className="flex gap-8">
-            {partyPlaylists?.map((playlist) => (
+            {partyPlaylists && partyPlaylists?.map((playlist) => (
               <Card
                 key={playlist.id}
                 image={playlist.images[0].url}
