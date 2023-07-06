@@ -20,20 +20,21 @@ export default function Card({
       className="group relative flex flex-col bg-zinc-750/60 rounded-lg p-5 cursor-pointer hover:bg-zinc-750 transition-colors"
       onClick={onClick}
     >
-      {
-        image ? 
+      {image ? (
         <img
-        className={`h-[9.5rem] w-40 bg-white ${
-          isArtist ? "rounded-full" : "rounded"
-        } shadow-lg shadow-black border border-[#282828]`}
-        src={image}
-        alt=""
-      />
-      :
-      <div className={`h-[9.5rem] w-40 bg-white ${
-        isArtist ? "rounded-full" : "rounded"
-      } shadow-lg shadow-black border border-[#282828] border border-zinc-300`}></div>
-      }
+          className={`h-[9.5rem] w-40 bg-white ${
+            isArtist ? "rounded-full" : "rounded"
+          } shadow-lg shadow-black border border-[#282828]`}
+          src={image}
+          alt=""
+        />
+      ) : (
+        <div
+          className={`h-[9.5rem] w-40 bg-white ${
+            isArtist ? "rounded-full" : "rounded"
+          } shadow-lg shadow-black border border-[#282828] border border-zinc-300`}
+        ></div>
+      )}
       <p className="text-white font-bold pb-1 pt-4 w-[8.5rem] truncate">
         {name}
       </p>
