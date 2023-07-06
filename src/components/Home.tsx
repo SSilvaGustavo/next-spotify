@@ -35,7 +35,7 @@ export default function Home() {
 
   useEffect(() => {
     if (session?.user?.accessToken) {
-      spotifyApi.getMyRecentlyPlayedTracks({ limit: 6 }).then((data) => {
+      spotifyApi.getMyRecentlyPlayedTracks().then((data) => {
         setRecentlyTracks(data.body.items);
       });
 
@@ -104,7 +104,7 @@ export default function Home() {
         </h1>
         <span className="text-2xl font-bold pb-2">Listen again</span>
         <div className="grid grid-cols-3 gap-x-8 gap-y-4">
-          {recentlyTracks?.map((recentlyTracked) => (
+          {recentlyTracks?.filter((recentlyTracked, index, array) => array.findIndex((item) => item.track.id === recentlyTracked.track.id) === index).slice(0, 6).map((recentlyTracked) => (
             <div
               key={recentlyTracked.track.id}
               className="relative group flex items-center rounded-lg h-20 w-[28rem] bg-zinc-400/20 space-x-6 hover:bg-zinc-400/30 transition-colors cursor-pointer"
