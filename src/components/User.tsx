@@ -1,9 +1,7 @@
 import { currentViewState } from "@/atoms/viewsAtoms";
-import { ChevronDownIcon, ChevronLeftIcon } from "lucide-react";
+import { ChevronDownIcon, ChevronLeftIcon, UserIcon } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { useRecoilState } from "recoil";
-import spotifyLogo from "@/assets/Spotify-Logo.png";
-import Image from "next/image";
 
 export default function User() {
   const { data: session } = useSession();
@@ -14,12 +12,19 @@ export default function User() {
         className={`absolute top-2 right-5 flex items-center bg-black space-x-3 opacity-90 hover:opacity-80 cursor-pointer rounded-full p-1 pr-2 text-white transition-opacity`}
         onClick={() => signOut()}
       >
-        <Image
-          className="rounded-full w-6 h-6"
-          src={session?.user?.image ?? spotifyLogo}
-          referrerPolicy="no-referrer"
-          alt=""
-        />
+        {
+          session?.user?.image ? 
+          <img
+            className="rounded-full w-6 h-6"
+            src={session?.user?.image}
+            referrerPolicy="no-referrer"
+            alt=""
+          />
+        :
+          <div className="rounded-full w-6 h-6">
+            <UserIcon className="w-6 h-6"/>
+          </div>
+        }
 
         <h2>{session?.user?.name}</h2>
         <ChevronDownIcon className="h-5 w-5" />

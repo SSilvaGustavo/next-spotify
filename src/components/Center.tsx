@@ -6,9 +6,11 @@ import { currentViewState } from "@/atoms/viewsAtoms";
 import Playlist from "./Playlist";
 import Artist from "./Artist";
 import Home from "./Home";
-import { colorState } from "@/atoms/utilsAtoms";
+import { colorState, meState } from "@/atoms/utilsAtoms";
 import { artistIdState } from "@/atoms/artistAtoms";
 import User from "./User";
+import { useSession } from "next-auth/react";
+import useSpotify from "@/hooks/useSpotify";
 
 const colors = [
   "from-red-500",
@@ -25,14 +27,26 @@ const colors = [
 ];
 
 export default function Center() {
+  const { data: session, status } = useSession();
+  const spotifyApi = useSpotify();
   const [color, setColor] = useRecoilState(colorState);
   const playlistId = useRecoilState(playlistIdState);
   const artistId = useRecoilState(artistIdState);
   const [view, setView] = useRecoilState(currentViewState);
+  const [me, setMe] = useRecoilState(meState);
 
   useEffect(() => {
     setColor(shuffle(colors).pop()!);
   }, [artistId[0], playlistId[0]]);
+
+  useEffect(() => {
+    if (spotifyApi.getAccessToken()) {
+      spotifyApi.getMe().then((data) => {
+        setMe(data.body)
+      })
+    }
+  }, [session, spotifyApi]);
+
 
   return (
     <div className="flex-grow h-screen overflow-y-scroll scrollbar-hide relative m-2">

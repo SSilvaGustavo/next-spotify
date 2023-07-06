@@ -9,6 +9,7 @@ import Card from "./Card";
 import { currentViewState } from "@/atoms/viewsAtoms";
 import { artistIdState } from "@/atoms/artistAtoms";
 import { playlistIdState } from "@/atoms/playlistAtoms";
+import { isEmpty } from "lodash";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -30,8 +31,8 @@ export default function Home() {
   const [relatedArtists, setRelatedArtists] =
     useState<SpotifyApi.ArtistObjectFull[]>();
   const firstTopArtistId = topArtist && topArtist[0];
-  // const [featured, setFeatured] =
-  // useState<SpotifyApi.PlaylistObjectSimplified[]>();
+  const [featured, setFeatured] =
+    useState<SpotifyApi.PlaylistObjectSimplified[]>();
 
   useEffect(() => {
     if (session?.user?.accessToken) {
@@ -58,13 +59,17 @@ export default function Home() {
           setPartyPlaylists(data.body.playlists.items);
         });
 
-      // spotifyApi.getFeaturedPlaylists({limit: 6}).then((data) => {
-      //   setFeatured(data.body.playlists.items);
-      // })
+      if (isEmpty(topArtist)) {
+        spotifyApi.getFeaturedPlaylists({ limit: 6 }).then((data) => {
+          setFeatured(data.body.playlists.items);
+        });
 
+        spotifyApi.getPlaylistsForCategory
+      }
       // spotifyApi.getCategories().then((data) => {
       //   console.log(data.body.categories.items.map((item) => item.id))
       // })
+      spotifyApi
     }
   }, [spotifyApi, session]);
 
@@ -102,95 +107,132 @@ export default function Home() {
         <h1 className="text-start w-full py-6 font-bold text-4xl">
           Hi {session?.user?.name?.split(" ")[0]}
         </h1>
-        <span className="text-2xl font-bold pb-2">Listen again</span>
-        <div className="grid grid-cols-3 gap-x-8 gap-y-4">
-          {recentlyTracks?.filter((recentlyTracked, index, array) => array.findIndex((item) => item.track.id === recentlyTracked.track.id) === index).slice(0, 6).map((recentlyTracked) => (
-            <div
-              key={recentlyTracked.track.id}
-              className="relative group flex items-center rounded-lg h-20 w-[28rem] bg-zinc-400/20 space-x-6 hover:bg-zinc-400/30 transition-colors cursor-pointer"
-              onClick={() => playSong(recentlyTracked)}
-            >
-              <img
-                className="rounded-l-lg h-20 w-20"
-                src={recentlyTracked.track.album.images[0].url ?? ""}
-                alt=""
-              />
-              <div className="flex flex-col justify-center">
-                <p className="font-bold">{recentlyTracked.track.name}</p>
-                <span className="text-xs font-medium text-zinc-400 truncate w-80">
-                  {artistsFormatter(recentlyTracked.track)}
-                </span>
-              </div>
-              <div className="absolute hidden items-center justify-center h-12 w-12 rounded-full bg-green-500 bottom-4 right-4 group-hover:flex animate-fade-in">
-                <PlayIcon className="h-6 w-6 stroke-black fill-black" />
-              </div>
+        {!isEmpty(recentlyTracks) && (
+          <>
+            <span className="text-2xl font-bold pb-2">Listen again</span>
+            <div className="grid grid-cols-3 gap-x-8 gap-y-4">
+              {recentlyTracks
+                ?.filter(
+                  (recentlyTracked, index, array) =>
+                    array.findIndex(
+                      (item) => item.track.id === recentlyTracked.track.id
+                    ) === index
+                )
+                .slice(0, 6)
+                .map((recentlyTracked) => (
+                  <div
+                    key={recentlyTracked.track.id}
+                    className="relative group flex items-center rounded-lg h-20 w-[28rem] bg-zinc-400/20 space-x-6 hover:bg-zinc-400/30 transition-colors cursor-pointer"
+                    onClick={() => playSong(recentlyTracked)}
+                  >
+                    <img
+                      className="rounded-l-lg h-20 w-20"
+                      src={recentlyTracked.track.album.images[0].url ?? ""}
+                      alt=""
+                    />
+                    <div className="flex flex-col justify-center">
+                      <p className="font-bold">{recentlyTracked.track.name}</p>
+                      <span className="text-xs font-medium text-zinc-400 truncate w-80">
+                        {artistsFormatter(recentlyTracked.track)}
+                      </span>
+                    </div>
+                    <div className="absolute hidden items-center justify-center h-12 w-12 rounded-full bg-green-500 bottom-4 right-4 group-hover:flex animate-fade-in">
+                      <PlayIcon className="h-6 w-6 stroke-black fill-black" />
+                    </div>
+                  </div>
+                ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
       </section>
 
       <div className="px-8 flex flex-col pb-28 pt-12 bg-zinc-950 gap-12">
         <div className="flex flex-col text-white font-bold space-y-6">
-          <h1 className="text-2xl">Your favorite artists</h1>
-          <div className="flex gap-8">
-            {topArtist && topArtist?.map((artist) => (
-              <Card
-                key={artist.id}
-                image={artist.images[0].url}
-                name={artist.name}
-                description={artist.type}
-                onClick={() => handleCardClick(artist.id, "artist")}
-                isArtist
-              />
-            ))}
-          </div>
+          {!isEmpty(topArtist) ? (
+            <>
+              <h1 className="text-2xl">Your favorite artists</h1>
+              <div className="flex gap-8">
+                {topArtist &&
+                  topArtist?.map((artist) => (
+                    <Card
+                      key={artist.id}
+                      image={artist.images[0].url}
+                      name={artist.name}
+                      description={artist.type}
+                      onClick={() => handleCardClick(artist.id, "artist")}
+                      isArtist
+                    />
+                  ))}
+              </div>
+            </>
+          ) : (
+            <>
+              <h1 className="text-2xl">Spotify recommendations</h1>
+              <div className="flex gap-8">
+                {featured &&
+                  featured?.map((playlist) => (
+                    <Card
+                      key={playlist.id}
+                      image={playlist.images[0].url}
+                      name={playlist.name}
+                      description={playlist.description ?? "Spotify's playlist"}
+                      onClick={() => handleCardClick(playlist.id, "playlist")}
+                    />
+                  ))}
+              </div>
+            </>
+          )}
         </div>
 
         <div className="flex flex-col text-white font-bold space-y-6">
-          <h1 className="text-2xl">Listen too</h1>
+          <h1 className="text-2xl">Feel the vibe</h1>
           <div className="flex gap-8">
-            {playlists && playlists?.map((playlist) => (
-              <Card
-                key={playlist.id}
-                image={playlist.images[0].url}
-                name={playlist.name}
-                description={playlist.description ?? playlist.type}
-                onClick={() => handleCardClick(playlist.id, "playlist")}
-              />
-            ))}
+            {playlists &&
+              playlists?.map((playlist) => (
+                <Card
+                  key={playlist.id}
+                  image={playlist.images[0].url}
+                  name={playlist.name}
+                  description={playlist.description ?? playlist.type}
+                  onClick={() => handleCardClick(playlist.id, "playlist")}
+                />
+              ))}
           </div>
         </div>
 
-        <div className="flex flex-col text-white font-bold space-y-6">
-          <h1 className="text-2xl">
-            Artists similar to {firstTopArtistId?.name}
-          </h1>
-          <div className="flex gap-8">
-            {relatedArtists && relatedArtists?.slice(0, 6).map((artist) => (
-              <Card
-                key={artist.id}
-                image={artist.images[0].url}
-                name={artist.name}
-                description={artist.type}
-                onClick={() => handleCardClick(artist.id, "artist")}
-                isArtist
-              />
-            ))}
+        {relatedArtists && (
+          <div className="flex flex-col text-white font-bold space-y-6">
+            <h1 className="text-2xl">
+              Artists similar to {firstTopArtistId?.name}
+            </h1>
+            <div className="flex gap-8">
+              {relatedArtists?.slice(0, 6).map((artist) => (
+                <Card
+                  key={artist.id}
+                  image={artist.images[0].url}
+                  name={artist.name}
+                  description={artist.type}
+                  onClick={() => handleCardClick(artist.id, "artist")}
+                  isArtist
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="flex flex-col text-white font-bold space-y-6">
           <h1 className="text-2xl">Party with your friends</h1>
           <div className="flex gap-8">
-            {partyPlaylists && partyPlaylists?.map((playlist) => (
-              <Card
-                key={playlist.id}
-                image={playlist.images[0].url}
-                name={playlist.name}
-                description={playlist.description ?? playlist.type}
-                onClick={() => handleCardClick(playlist.id, "playlist")}
-              />
-            ))}
+            {partyPlaylists &&
+              partyPlaylists?.map((playlist) => (
+                <Card
+                  key={playlist.id}
+                  image={playlist.images[0].url}
+                  name={playlist.name}
+                  description={playlist.description ?? playlist.type}
+                  onClick={() => handleCardClick(playlist.id, "playlist")}
+                />
+              ))}
           </div>
         </div>
       </div>

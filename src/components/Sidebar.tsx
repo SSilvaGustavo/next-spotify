@@ -8,11 +8,15 @@ import Playlists from "./Playlists";
 import Artists from "./Artists";
 import { currentViewState } from "@/atoms/viewsAtoms";
 import { useRecoilState } from "recoil";
+import { isEmpty } from "lodash";
+import Link from "next/link";
+import { meState } from "@/atoms/utilsAtoms";
 
 export default function Sidebar() {
   const spotifyApi = useSpotify();
   const { data: session, status } = useSession();
   const [view, setView] = useRecoilState(currentViewState);
+  const me = useRecoilState(meState);
 
   const [playlists, setPlaylists] = useState<
     SpotifyApi.PlaylistObjectSimplified[]
@@ -33,8 +37,8 @@ export default function Sidebar() {
   }, [session, spotifyApi]);
 
   return (
-    <div className="text-zinc-500 bg-black m-2 text-xs lg:text-sm h-screen sm:max-w-[12rem] lg:max-w-[24rem] hidden md:inline-flex rounded-lg">
-      <div className="flex flex-col gap-5 h-full font-extrabold text-base">
+    <div className="text-zinc-500 bg-black m-2 text-xs lg:text-sm h-screen sm:max-w-[12rem] lg:max-w-sm hidden md:inline-flex rounded-lg">
+      <div className="flex flex-col gap-5 h-full font-extrabold text-base min-w-[18rem]">
         <div className="flex flex-col space-y-4 bg-zinc-950 rounded-lg p-5">
           <button className="sidebar-button gap-4" onClick={() => signOut()}>
             <LogOutIcon className="h-6 w-6" />
@@ -72,14 +76,30 @@ export default function Sidebar() {
             ref={scrollDiv}
             onScroll={() => setPrevScrollPos(scrollDiv.current!.scrollTop)}
           >
-            {playlists.map((playlist) => (
-              <Playlists key={playlist.id} playlist={playlist} />
-            ))}
+            {!isEmpty(playlists) && !isEmpty(artists) ? (
+              <>
+                {playlists.map((playlist) => (
+                  <Playlists key={playlist.id} playlist={playlist} />
+                ))}
 
-            {artists &&
-              artists.map((artist) => (
-                <Artists key={artist.id} artist={artist} />
-              ))}
+                {artists &&
+                  artists.map((artist) => (
+                    <Artists key={artist.id} artist={artist} />
+                  ))}
+              </>
+            ) : (
+              <div className="flex flex-col bg-zinc-750 rounded p-4 mx-4 text-white">
+                <h1>Create your first playlist</h1>
+                <p className="text-sm mt-4 mb-8">It's easy, just click here</p>
+                <Link
+                  href={me[0].external_urls?.spotify ?? ""}
+                  target="_blank"
+                  className="flex items-center justify-center bg-white text-sm text-black p-2 rounded-full w-32 cursor-pointer hover:scale-105 transition-transform"
+                >
+                  Create playlist
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>
