@@ -37,8 +37,8 @@ export default function Sidebar() {
   }, [session, spotifyApi]);
 
   return (
-    <div className="text-zinc-500 bg-black m-2 text-xs lg:text-sm h-screen sm:max-w-[12rem] lg:max-w-sm hidden md:inline-flex rounded-lg">
-      <div className="flex flex-col gap-5 h-full font-extrabold text-base min-w-[18rem]">
+    <div className="text-zinc-500 bg-black m-2 text-xs lg:text-sm h-screen hidden md:inline-flex rounded-lg">
+      <div className="flex flex-col gap-5 h-full font-extrabold text-base w-60 lg:w-96">
         <div className="flex flex-col space-y-4 bg-zinc-950 rounded-lg p-5">
           <button className="sidebar-button gap-4" onClick={() => signOut()}>
             <LogOutIcon className="h-6 w-6" />
@@ -72,7 +72,7 @@ export default function Sidebar() {
             </button>
           </div>
           <div
-            className="flex flex-col overflow-y-scroll scrollbar-hide h-[64vh]"
+            className="flex flex-col overflow-y-scroll scrollbar-hide h-[70vh] 2xl:h-[64vh]"
             ref={scrollDiv}
             onScroll={() => setPrevScrollPos(scrollDiv.current!.scrollTop)}
           >

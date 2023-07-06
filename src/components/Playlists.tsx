@@ -26,8 +26,8 @@ export default function Playlists({ playlist }: IPlaylists) {
           src={playlist.images[0].url ?? ""}
           alt=""
         />
-        <div className="flex flex-col space-y-1">
-          <p className="max-w-[18rem] text-base text-zinc-300 truncate">
+        <div className="flex flex-col space-y-1 max-w-xs">
+          <p className="text-base text-zinc-300 whitespace-pre-wrap 2xl:truncate">
             {playlist.name}
           </p>
           <span className="capitalize text-sm">

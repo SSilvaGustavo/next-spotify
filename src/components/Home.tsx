@@ -64,12 +64,12 @@ export default function Home() {
           setFeatured(data.body.playlists.items);
         });
 
-        spotifyApi.getPlaylistsForCategory
+        spotifyApi.getPlaylistsForCategory;
       }
       // spotifyApi.getCategories().then((data) => {
       //   console.log(data.body.categories.items.map((item) => item.id))
       // })
-      spotifyApi
+      spotifyApi;
     }
   }, [spotifyApi, session]);
 
@@ -102,7 +102,7 @@ export default function Home() {
   return (
     <div className="flex flex-col h-full">
       <section
-        className={`flex flex-col items-start justify-end space-x-7 bg-gradient-to-b to-zinc-950 from-purple-700 h-80 px-8 pb-8 text-white rounded-t-lg`}
+        className={`flex flex-col items-start justify-end 2xl:space-x-7 bg-gradient-to-b to-zinc-950 from-purple-700 px-8 pb-8 text-white rounded-t-lg`}
       >
         <h1 className="text-start w-full py-6 font-bold text-4xl">
           Hi {session?.user?.name?.split(" ")[0]}
@@ -110,7 +110,7 @@ export default function Home() {
         {!isEmpty(recentlyTracks) && (
           <>
             <span className="text-2xl font-bold pb-2">Listen again</span>
-            <div className="grid grid-cols-3 gap-x-8 gap-y-4">
+            <div className="grid grid-cols-2 w-full 2xl:w-max 2xl:grid-cols-3 gap-x-8 gap-y-4">
               {recentlyTracks
                 ?.filter(
                   (recentlyTracked, index, array) =>
@@ -122,22 +122,26 @@ export default function Home() {
                 .map((recentlyTracked) => (
                   <div
                     key={recentlyTracked.track.id}
-                    className="relative group flex items-center rounded-lg h-20 w-[28rem] bg-zinc-400/20 space-x-6 hover:bg-zinc-400/30 transition-colors cursor-pointer"
+                    className="relative group flex items-center rounded-lg h-16 2xl:h-20 max-w-[28rem] bg-zinc-400/20 hover:bg-zinc-400/30 transition-colors cursor-pointer"
                     onClick={() => playSong(recentlyTracked)}
                   >
                     <img
-                      className="rounded-l-lg h-20 w-20"
+                      className="rounded-l-lg h-16 2xl:h-20 w-16 2xl:w-20"
                       src={recentlyTracked.track.album.images[0].url ?? ""}
                       alt=""
                     />
-                    <div className="flex flex-col justify-center">
-                      <p className="font-bold">{recentlyTracked.track.name}</p>
-                      <span className="text-xs font-medium text-zinc-400 truncate w-80">
-                        {artistsFormatter(recentlyTracked.track)}
-                      </span>
-                    </div>
-                    <div className="absolute hidden items-center justify-center h-12 w-12 rounded-full bg-green-500 bottom-4 right-4 group-hover:flex animate-fade-in">
-                      <PlayIcon className="h-6 w-6 stroke-black fill-black" />
+                    <div className="flex items-center justify-between w-full px-4">
+                      <div className="flex flex-col justify-center">
+                        <p className="font-bold">
+                          {recentlyTracked.track.name}
+                        </p>
+                        <span className="max-2xl:hidden text-xs font-medium text-zinc-400 truncate min-w-[10rem] max-w-[20rem]">
+                          {artistsFormatter(recentlyTracked.track)}
+                        </span>
+                      </div>
+                      <div className="flex opacity-0 items-center justify-center h-12 w-12 rounded-full bg-green-500 bottom-4 right-4 group-hover:opacity-100 ease-in-out duration-200">
+                        <PlayIcon className="h-6 w-6 stroke-black fill-black" />
+                      </div>
                     </div>
                   </div>
                 ))}

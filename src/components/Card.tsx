@@ -39,7 +39,7 @@ export default function Card({
         {name}
       </p>
       <span
-        className={`text-sm text-zinc-500 font-medium ${
+        className={`text-sm text-zinc-400 font-medium ${
           isArtist && "capitalize"
         } w-36 line-clamp-2`}
       >
