@@ -21,7 +21,7 @@ export default function Artists({ artist }: IArtist) {
       className="cursor-pointer rounded hover:bg-zinc-900 transition-colors p-2"
     >
       <div className="flex items-center space-x-2">
-        <img className="w-12 h-12 rounded" src={artist.images[0].url} alt="" />
+        <img className="w-12 h-12 rounded" src={artist.images[0].url ?? ""} alt="" />
         <div className="flex flex-col space-y-1">
           <p className="max-w-[18rem] text-base text-zinc-300 truncate">
             {artist.name}

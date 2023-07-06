@@ -105,7 +105,7 @@ export default function Player() {
       <div className="flex items-center space-x-4">
         <img
           className="hidden md:inline h-14 w-h-14 rounded-md"
-          src={songInfo?.album.images[0].url}
+          src={songInfo?.album.images[0].url ?? ""}
           alt=""
         />
         <div>

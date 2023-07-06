@@ -23,7 +23,7 @@ export default function Playlists({ playlist }: IPlaylists) {
       <div className="flex items-center space-x-2">
         <img
           className="w-12 h-12 rounded"
-          src={playlist.images[0].url}
+          src={playlist.images[0].url ?? ""}
           alt=""
         />
         <div className="flex flex-col space-y-1">

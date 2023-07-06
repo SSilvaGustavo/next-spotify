@@ -35,7 +35,7 @@ export default function Playlist() {
         {playlist.images ? (
           <img
             className="h-60 w-60 shadow-2xl rounded"
-            src={playlist.images[0].url}
+            src={playlist.images[0].url ?? ""}
             alt=""
           />
         ) : (

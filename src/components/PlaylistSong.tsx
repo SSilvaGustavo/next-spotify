@@ -57,7 +57,7 @@ export default function PlaylistSong({ order, track }: IPlaylistSong) {
             >
               <img
                 className="h-10 w-10"
-                src={track.track?.album.images[0].url}
+                src={track.track?.album.images[0].url ?? ""}
                 alt=""
               />
             </Link>

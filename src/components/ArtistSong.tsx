@@ -57,7 +57,7 @@ export default function ArtistSong({ order, track }: IArtistSong) {
             >
               <img
                 className="h-10 w-10"
-                src={track.album.images[0].url}
+                src={track.album.images[0].url ?? ""}
                 alt=""
               />
             </Link>
